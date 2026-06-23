@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Báo cáo Trả góp Ngành Tai nghe Q2/2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root{
+    --navy:#0f2a4a; --navy2:#16365c; --accent:#e8742c; --accent2:#2c8de8;
+    --green:#1e9e6b; --red:#d64545; --bg:#f4f6f9; --card:#ffffff; --muted:#6b7689; --line:#e3e7ee;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:#1c2533;line-height:1.55;}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 24px 60px;}
+  header.hero{background:linear-gradient(135deg,var(--navy) 0%, var(--navy2) 60%, #1c4a7a 100%);color:#fff;border-radius:18px;padding:36px 40px;margin-bottom:28px;position:relative;overflow:hidden;}
+  header.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:260px;height:260px;border-radius:50%;background:rgba(232,116,44,0.18);}
+  header.hero h1{margin:0 0 8px;font-size:28px;letter-spacing:.3px;}
+  header.hero p{margin:4px 0;color:#c9d6e8;font-size:14.5px;}
+  .badge{display:inline-block;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.25);padding:4px 12px;border-radius:20px;font-size:12.5px;margin-top:10px;margin-right:8px;}
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:30px;}
+  .kpi{background:var(--card);border-radius:14px;padding:18px 20px;border:1px solid var(--line);box-shadow:0 1px 3px rgba(20,30,50,0.04);}
+  .kpi .lbl{font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;font-weight:600;}
+  .kpi .val{font-size:25px;font-weight:700;color:var(--navy);margin-top:6px;}
+  .kpi .sub{font-size:12.5px;color:var(--muted);margin-top:4px;}
+  section{margin-bottom:34px;}
+  h2{font-size:20px;color:var(--navy);border-left:5px solid var(--accent);padding-left:12px;margin:0 0 14px;}
+  h3{font-size:15.5px;color:var(--navy2);margin:22px 0 10px;}
+  .card{background:var(--card);border-radius:14px;padding:22px 24px;border:1px solid var(--line);box-shadow:0 1px 3px rgba(20,30,50,0.04);}
+  p{font-size:14.5px;color:#33405a;}
+  .grid2{display:grid;grid-template-columns:1.15fr 1fr;gap:18px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);}
+  th:first-child,td:first-child{text-align:left;}
+  thead th{background:#eef2f8;color:var(--navy2);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.3px;}
+  tbody tr:hover{background:#f8fafc;}
+  tbody tr:last-child td{border-bottom:none;}
+  .pos{color:var(--green);font-weight:600;}
+  .neg{color:var(--red);font-weight:600;}
+  .tag{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:10px;font-weight:600;}
+  .tag.high{background:#fde8e8;color:#b13a3a;}
+  .tag.mid{background:#fff2e0;color:#a8631a;}
+  .tag.low{background:#e6f4ed;color:#1e7a51;}
+  .note{background:#fff7ec;border:1px solid #f1d9b3;border-radius:10px;padding:12px 16px;font-size:13px;color:#7a5318;margin-top:12px;}
+  .note b{color:#5c3d0f;}
+  .source{font-size:11.5px;color:var(--muted);margin-top:6px;}
+  .step{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px;}
+  .step .num{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;}
+  .step .txt{font-size:14px;color:#33405a;}
+  .step .txt b{color:var(--navy2);}
+  .pill-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+  .pill{background:#eef2f8;border-radius:8px;padding:8px 12px;font-size:12.5px;color:var(--navy2);}
+  .pill b{display:block;font-size:15px;color:var(--navy);}
+  .chart-box{position:relative;height:300px;}
+  .chart-box.tall{height:340px;}
+  .legend-note{font-size:12px;color:var(--muted);margin-top:6px;}
+  .opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;}
+  .opt-card{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .opt-card.a{background:#eefaf3;border-color:#bfe6cf;}
+  .opt-card.b{background:#fef6ec;border-color:#f3dcb6;}
+  .opt-card h4{margin:0 0 8px;font-size:15px;color:var(--navy);}
+  .opt-card ul{margin:8px 0 0;padding-left:18px;font-size:13.5px;color:#33405a;}
+  .footer-note{font-size:12px;color:var(--muted);text-align:center;margin-top:40px;border-top:1px solid var(--line);padding-top:16px;}
+  .scn-tabs{display:flex;gap:8px;margin-bottom:14px;}
+  .scn-tab{padding:7px 16px;border-radius:8px;background:#eef2f8;font-size:13px;font-weight:600;color:var(--navy2);cursor:default;}
+  .scn-tab.active{background:var(--navy);color:#fff;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>Phân tích Trả góp Ngành hàng Tai nghe — Q2/2026 (đến 20/06/2026)</h1>
+  <p>9 thương hiệu trọng điểm: SENNHEISER · BOSE · SAMSUNG · MARSHALL · SONY · SHOKZ · JBL · HUAWEI · ANKER</p>
+  <p>Mục tiêu: Đánh giá hiện trạng trả góp, đề xuất mở rộng kỳ hạn lên 9–12 tháng, tính chi phí phát sinh và uplift doanh số trả góp kỳ vọng</p>
+  <span class="badge">Nguồn: Export hệ thống Cellphones (3 file dữ liệu)</span>
+  <span class="badge">Tham chiếu chi phí: Wiki "TRẢ GÓP CELLPHONES"</span>
+  <span class="badge">Ngày lập báo cáo: 22/06/2026</span>
+</header>
+
+<section>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="lbl">Tổng doanh số trả góp (9 brand)</div><div class="val">4,51 tỷ đ</div><div class="sub">trên tổng doanh số 51,28 tỷ đ</div></div>
+    <div class="kpi"><div class="lbl">Tỷ lệ thâm nhập trả góp (DT)</div><div class="val">8,79%</div><div class="sub">bình quân gia quyền 9 brand</div></div>
+    <div class="kpi"><div class="lbl">Chi phí trả góp hiện tại</div><div class="val">115,8 tr đ</div><div class="sub">≈2,57% trên doanh số trả góp</div></div>
+    <div class="kpi"><div class="lbl">Kỳ hạn 9–12 tháng hiện hữu</div><div class="val">&lt; 8%</div><div class="sub">trong tổng đơn trả góp mỗi brand</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>1. Hiện trạng trả góp theo từng brand</h2>
+  <div class="card">
+    <p>Dữ liệu Q2/2026 (tính đến 20/6) cho thấy mức độ thâm nhập trả góp rất phân tán giữa các brand — từ 2,75% (ANKER) đến 17,56% (SENNHEISER) trên doanh thu. Đây là 2 chỉ số khác nhau: <b>tỷ lệ thâm nhập</b> (brand nào khách trả góp nhiều) và <b>quy mô tuyệt đối</b> (brand nào tạo ra nhiều tiền trả góp nhất) — SONY dẫn đầu tuyệt đối nhờ đơn giá cao, dù tỷ lệ thâm nhập chỉ ở mức trung bình.</p>
+    <div class="grid2" style="margin-top:16px;">
+      <div class="chart-box"><canvas id="chartPenetration"></canvas></div>
+      <div class="chart-box"><canvas id="chartGMV"></canvas></div>
+    </div>
+  </div>
+
+  <h3>Bảng chi tiết theo brand</h3>
+  <div class="card" style="overflow-x:auto;">
+    <table>
+      <thead><tr>
+        <th>Brand</th><th>Doanh số All (đ)</th><th>Doanh số Trả góp (đ)</th><th>% DT Trả góp</th><th>Chi phí trả góp %DT</th><th>Chi phí /DS trả góp</th><th>% Kỳ hạn 7–12 tháng</th>
+      </tr></thead>
+      <tbody id="tblMain"></tbody>
+    </table>
+    <p class="source">Nguồn: "Chi tiết Thanh toán – Trả góp qua cổng (3).xlsx", "data (16).xlsx" — chỉ số gốc từ hệ thống báo cáo trả góp Cellphones.</p>
+  </div>
+</section>
+
+<section>
+  <h2>2. Cơ cấu kỳ hạn trả góp hiện tại</h2>
+  <div class="card">
+    <p>Trong phần đơn trả góp có ghi nhận kỳ hạn cụ thể (qua CTTC — Home Credit, FE Credit, HD Saigon, Mirae...), kỳ hạn <b>4–6 tháng chiếm đa số tuyệt đối</b> ở mọi brand; kỳ hạn 7–9 và 10–12 tháng chỉ chiếm 0–8% số đơn. Phần còn lại (52–80% tuỳ brand, nhãn "Khác/Cổng thẻ TD") là trả góp qua cổng thanh toán thẻ tín dụng ngân hàng — hiện chỉ hỗ trợ 0% miễn phí cho kỳ hạn tối đa 6 tháng đối với nhóm hàng phụ kiện/tai nghe.</p>
+    <div class="chart-box tall" style="margin-top:14px;"><canvas id="chartTermMix"></canvas></div>
+    <p class="legend-note">"Khác/Cổng thẻ TD": đơn trả góp qua cổng thẻ ngân hàng không phân theo kỳ hạn cụ thể trong báo cáo nguồn — chủ yếu là kỳ hạn ngắn 0–6 tháng theo chính sách hiện hành.</p>
+  </div>
+
+  <div class="note">
+    <b>Rào cản chính (theo Wiki "TRẢ GÓP CELLPHONES" – mục "DS 0% Thẻ TD_Không phí"):</b> Nhóm "Các sản phẩm còn lại" (bao gồm tai nghe) hiện <b>chỉ được ngân hàng miễn phí chuyển đổi 0% cho kỳ hạn 3–6 tháng</b>; kỳ hạn 9 và 12 tháng <b>chưa được bật miễn phí</b> cho nhóm này — trong khi Laptop, Apple (trừ iPhone) và Điện máy đã được áp dụng 9–12 tháng miễn phí. Đây là khoảng trống tạo cơ hội đề xuất.
+  </div>
+</section>
+
+<section>
+  <h2>3. Đề xuất mở rộng kỳ hạn lên 9–12 tháng</h2>
+  <div class="opt-grid">
+    <div class="opt-card a">
+      <h4>🅰️ Phương án ưu tiên — Đàm phán mở kỳ hạn 9–12 tháng miễn phí với ngân hàng liên kết</h4>
+      <ul>
+        <li>Đề nghị ngân hàng bổ sung nhóm "phụ kiện/tai nghe" vào danh sách 0% kỳ hạn 9 & 12 tháng (như đã áp dụng cho Laptop/Điện máy).</li>
+        <li>Chi phí phát sinh cho Cellphones ≈ 0% (do ngân hàng tài trợ lãi suất), không cần trả trước.</li>
+        <li>Rủi ro: phụ thuộc đàm phán, thời gian triển khai có thể 1–2 tháng.</li>
+      </ul>
+    </div>
+    <div class="opt-card b">
+      <h4>🅱️ Phương án dự phòng — Đẩy qua CTTC (Home Credit/FE Credit/HD Saigon) 0%</h4>
+      <ul>
+        <li>Kỳ hạn 9/12 tháng đã sẵn có qua CTTC, nhưng khách phải trả trước 20–30% và Cellphones chịu phí trợ giá 0%.</li>
+        <li>Chi phí trợ giá tăng tuyến tính theo kỳ hạn: <b>≈0,853%/tháng</b> giá trị sản phẩm (tính từ bảng tính 0% Home Credit, trả trước 20%).</li>
+        <li>Triển khai ngay, không cần đàm phán thêm — phù hợp làm bước đệm trong khi chờ Phương án A.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Đường cong chi phí trợ giá theo kỳ hạn (Phương án B)</h3>
+  <div class="card">
+    <div class="grid2">
+      <div class="chart-box"><canvas id="chartCostCurve"></canvas></div>
+      <div>
+        <table>
+          <thead><tr><th>Kỳ hạn</th><th>Chi phí trợ giá (%giá bán)</th><th>Số tiền trên SP 20tr</th></tr></thead>
+          <tbody>
+            <tr><td>6 tháng</td><td>5,14%</td><td>1.028.000 đ</td></tr>
+            <tr><td>9 tháng</td><td>7,71%</td><td>1.541.000 đ</td></tr>
+            <tr><td>12 tháng</td><td>10,24%</td><td>2.048.000 đ</td></tr>
+          </tbody>
+        </table>
+        <p class="source" style="margin-top:10px;">Nguồn: Sheet "BẢNG TÍNH 0%" — wiki Trả góp Cellphones (mô phỏng Home Credit, trả trước 20%, sản phẩm 20.000.000đ). Tỷ lệ ổn định ~0,853%/tháng bất kể giá trị sản phẩm.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>4. Mô hình Uplift doanh số trả góp kỳ vọng</h2>
+  <div class="card">
+    <p><b>Lưu ý phương pháp:</b> Dữ liệu hiện có không chứa một "thử nghiệm tự nhiên" để đo trực tiếp độ nhạy (elasticity) giữa kỳ hạn và doanh số trả góp — cơ cấu kỳ hạn 7–12 tháng hiện tại quá nhỏ (0–8% số đơn) và bị giới hạn bởi chính sách (Mục 2), không phản ánh nhu cầu thật. Bản cập nhật này <b>hạ mức giả định</b> so với bản đầu (uplift 20% Base ban đầu được đánh giá là quá cao) và <b>chia theo phân khúc giá</b>: nhóm đơn giá cao — SONY, BOSE, SENNHEISER, SAMSUNG, MARSHALL — dùng mức 8/12/18%, vì kéo dài kỳ hạn giảm đáng kể số tiền trả mỗi tháng nên tác động rõ hơn; nhóm đơn giá thấp — ANKER, JBL, SHOKZ, HUAWEI — dùng mức 3/6/10%, vì sản phẩm đã rẻ nên kỳ hạn ít ảnh hưởng đến quyết định mua. Đây vẫn là giả định kế hoạch, cần đối chiếu thực tế sau pilot 4–6 tuần.</p>
+    <div class="scn-tabs">
+      <div class="scn-tab">Conservative</div>
+      <div class="scn-tab active">Base</div>
+      <div class="scn-tab">Optimistic</div>
+    </div>
+    <p class="legend-note">Nhóm đơn giá cao (SONY/BOSE/SENNHEISER/SAMSUNG/MARSHALL): 8% / 12% / 18% &nbsp;·&nbsp; Nhóm đơn giá thấp (ANKER/JBL/SHOKZ/HUAWEI): 3% / 6% / 10%</p>
+    <div class="grid3">
+      <div class="pill"><b>+305,9 triệu đ</b>Conservative — Doanh số trả góp tăng thêm (9 brand)</div>
+      <div class="pill"><b>+475,3 triệu đ</b>Base — Doanh số trả góp tăng thêm (9 brand)</div>
+      <div class="pill"><b>+723,9 triệu đ</b>Optimistic — Doanh số trả góp tăng thêm (9 brand)</div>
+    </div>
+
+    <h3>So sánh Uplift vs Chi phí phát sinh (Phương án B – CTTC)</h3>
+    <div class="chart-box tall"><canvas id="chartScenario"></canvas></div>
+    <div class="grid3" style="margin-top:14px;">
+      <div class="pill"><b>23,6 – 55,8 triệu đ</b>Chi phí trợ giá nếu xử lý 100% qua CTTC 9 tháng (3 kịch bản)</div>
+      <div class="pill"><b>31,3 – 74,1 triệu đ</b>Chi phí trợ giá nếu xử lý 100% qua CTTC 12 tháng (3 kịch bản)</div>
+      <div class="pill"><b>0 đ</b>Chi phí nếu đạt được Phương án A (ngân hàng miễn phí)</div>
+    </div>
+    <p style="margin-top:12px;">Với Phương án A, toàn bộ phần uplift là doanh số trả góp tăng thêm <b>không kèm chi phí tài chính</b>. Với Phương án B, chi phí trợ giá chỉ chiếm <b>7,7–10,2%</b> trên phần GMV tăng thêm — thấp hơn biên lợi nhuận gộp phổ biến của ngành tai nghe (thường 12–25%), nên vẫn khả thi về hiệu quả ở cả 3 kịch bản.</p>
+  </div>
+
+  <h3>Uplift &amp; chi phí theo từng brand (kịch bản Base)</h3>
+  <div class="card" style="overflow-x:auto;">
+    <table>
+      <thead><tr>
+        <th>Brand</th><th>Phân khúc</th><th>Tỷ lệ uplift áp dụng</th><th>DS Trả góp hiện tại</th><th>Uplift kỳ vọng</th><th>Chi phí CTTC @9 tháng</th><th>Chi phí CTTC @12 tháng</th><th>Mức ưu tiên</th>
+      </tr></thead>
+      <tbody id="tblBrandUplift"></tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>5. Khuyến nghị ưu tiên triển khai</h2>
+  <div class="card">
+    <div class="step"><div class="num">1</div><div class="txt"><b>SONY, SAMSUNG, BOSE</b> — ưu tiên cao nhất: quy mô GMV trả góp lớn nhất (1,76 tỷ / 605,6 tr / 548,9 tr đ), đơn giá cao nên khách nhạy với kỳ hạn dài → uplift tuyệt đối lớn nhất khi mở 9–12 tháng.</div></div>
+    <div class="step"><div class="num">2</div><div class="txt"><b>SENNHEISER, MARSHALL</b> — tỷ lệ thâm nhập trả góp đã rất cao (17,56% và 10,88%) nhưng kỳ hạn 7–12 tháng hiện = 0% số đơn → nhóm khách hàng "sẵn sàng trả góp" nhưng đang bị giới hạn kỳ hạn ngắn, là nhóm dễ chuyển đổi nhất khi mở kỳ hạn mới.</div></div>
+    <div class="step"><div class="num">3</div><div class="txt"><b>JBL, HUAWEI, SHOKZ</b> — tỷ lệ thâm nhập trung bình thấp (5,6–8,6%); cần kết hợp mở kỳ hạn với truyền thông/ưu đãi điểm bán để tăng nhận biết, không chỉ dựa vào kỳ hạn.</div></div>
+    <div class="step"><div class="num">4</div><div class="txt"><b>ANKER</b> — đơn giá thấp, thâm nhập trả góp thấp nhất (2,75%) nhưng tỷ trọng kỳ hạn dài hiện tại cao nhất (8,04%) trong nhóm CTTC → cho thấy nhu cầu kỳ hạn dài có thật nhưng quy mô nhỏ, theo dõi thêm trước khi đầu tư nguồn lực lớn.</div></div>
+    <div class="step"><div class="num">5</div><div class="txt"><b>Hành động ngay:</b> (a) Gửi đề xuất bổ sung nhóm tai nghe/phụ kiện vào danh sách 0% kỳ hạn 9–12 tháng với ngân hàng liên kết trực tiếp; (b) Trong thời gian chờ, pilot kỳ hạn 9–12 tháng qua Home Credit/FE Credit cho SONY/SAMSUNG/BOSE tại 5–10 cửa hàng để đo uplift thực tế trong 4–6 tuần, làm cơ sở hiệu chỉnh 3 kịch bản trên.</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>6. Giả định &amp; hạn chế dữ liệu</h2>
+  <div class="card">
+    <ul style="font-size:13.5px;color:#33405a;padding-left:20px;">
+      <li>Số liệu trả góp lấy từ 3 file export hệ thống Cellphones, giai đoạn Q2/2026 đến 20/06/2026 — chưa đủ 1 quý hoàn chỉnh, có thể chưa phản ánh hết tính mùa vụ.</li>
+      <li>Cột "Chi phí Trả góp %" trong dữ liệu là chi phí <b>bình quân hiện tại</b> (blended) trên toàn bộ kênh trả góp của brand, không tách riêng theo kỳ hạn — phần phân tích kỳ hạn 9-12 tháng dùng số liệu tham chiếu riêng từ bảng tính Home Credit trong wiki.</li>
+      <li>Mô hình uplift (8/12/18% cho nhóm đơn giá cao; 3/6/10% cho nhóm đơn giá thấp) là giả định kế hoạch (planning assumption), <b>không suy ra trực tiếp từ dữ liệu lịch sử</b> do thiếu giai đoạn đối chứng (kỳ hạn 9-12 tháng hiện gần như không tồn tại với tai nghe). Việc phân theo phân khúc giá dựa trên logic tài chính tiêu dùng (kỳ hạn dài giảm số tiền trả mỗi tháng nhiều hơn ở hàng giá cao) và quan sát thực tế là các brand hiện có tỷ trọng kỳ hạn dài cao nhất trong dữ liệu (ANKER, SAMSUNG) không cho thấy tương quan thuận với tỷ lệ thâm nhập tổng thể — cần pilot thực tế để hiệu chỉnh thay vì xem là số liệu đã được chứng minh.</li>
+      <li>Chi phí trợ giá CTTC giả định 100% uplift xử lý qua một kỳ hạn duy nhất (9 hoặc 12 tháng) với mức trả trước 20% — thực tế sẽ là hỗn hợp nhiều kỳ hạn/đối tác, chi phí thực tế có thể thấp hơn nếu phối hợp nhiều kỳ hạn ngắn hơn.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="footer-note">Báo cáo nội bộ — Phân tích trả góp ngành hàng tai nghe, 9 thương hiệu trọng điểm · Lark AI · 22/06/2026</div>
+</div>
+
+<script>
+const brandData = [{"Brand":"SENNHEISER","Tier":"high","DoanhSo_All":1032931000.0,"DoanhSo_TraGop":181360565.0,"PenetrationRevenue":0.1755785866,"ChiPhi_Pct_All":0.0052339797,"ChiPhi_pct_of_installment":0.0298098975,"Share_4_6":0.3888888889,"Share_7_9":0.0,"Share_10_12":0.0,"Share_0_3":0.0277777778,"Share_Gateway":0.5833333333,"UpliftRate_Cons":0.08,"UpliftRate_Base":0.12,"UpliftRate_Opt":0.18,"Uplift_Conservative":14508845.2,"Cost9_Conservative":1117906.52266,"Cost12_Conservative":1485705.7484800003,"Uplift_Base":21763267.8,"Cost9_Base":1676859.7839899999,"Cost12_Base":2228558.6227200003,"Uplift_Optimistic":32644901.7,"Cost9_Optimistic":2515289.6759849996,"Cost12_Optimistic":3342837.93408},{"Brand":"BOSE","Tier":"high","DoanhSo_All":3275223000.0,"DoanhSo_TraGop":548865118.0,"PenetrationRevenue":0.1675809916,"ChiPhi_Pct_All":0.0048925975,"ChiPhi_pct_of_installment":0.0291954204,"Share_4_6":0.417721519,"Share_7_9":0.0,"Share_10_12":0.0126582278,"Share_0_3":0.0126582278,"Share_Gateway":0.5569620253,"UpliftRate_Cons":0.08,"UpliftRate_Base":0.12,"UpliftRate_Opt":0.18,"Uplift_Conservative":43909209.44,"Cost9_Conservative":3383204.5873519997,"Cost12_Conservative":4496303.0466560004,"Uplift_Base":65863814.16,"Cost9_Base":5074806.8810279993,"Cost12_Base":6744454.5699840002,"Uplift_Optimistic":98795721.24,"Cost9_Optimistic":7612210.3215419985,"Cost12_Optimistic":10116681.8549760003},{"Brand":"SAMSUNG","Tier":"high","DoanhSo_All":5139303000.0,"DoanhSo_TraGop":605598875.0,"PenetrationRevenue":0.1178367718,"ChiPhi_Pct_All":0.0036462506,"ChiPhi_pct_of_installment":0.0309432322,"Share_4_6":0.3918918919,"Share_7_9":0.0216216216,"Share_10_12":0.0324324324,"Share_0_3":0.0324324324,"Share_Gateway":0.5216216216,"UpliftRate_Cons":0.08,"UpliftRate_Base":0.12,"UpliftRate_Opt":0.18,"Uplift_Conservative":48447910.0,"Cost9_Conservative":3732911.4654999995,"Cost12_Conservative":4961065.9840000002,"Uplift_Base":72671865.0,"Cost9_Base":5599367.1982499994,"Cost12_Base":7441598.9760000007,"Uplift_Optimistic":109007797.5,"Cost9_Optimistic":8399050.7973749992,"Cost12_Optimistic":11162398.4639999997},{"Brand":"MARSHALL","Tier":"high","DoanhSo_All":2890980000.0,"DoanhSo_TraGop":314554646.0,"PenetrationRevenue":0.1088055421,"ChiPhi_Pct_All":0.0035052115,"ChiPhi_pct_of_installment":0.0322153768,"Share_4_6":0.4387755102,"Share_7_9":0.0,"Share_10_12":0.0,"Share_0_3":0.0408163265,"Share_Gateway":0.5204081633,"UpliftRate_Cons":0.08,"UpliftRate_Base":0.12,"UpliftRate_Opt":0.18,"Uplift_Conservative":25164371.68,"Cost9_Conservative":1938914.8379439998,"Cost12_Conservative":2576831.6600319999,"Uplift_Base":37746557.52,"Cost9_Base":2908372.2569159996,"Cost12_Base":3865247.4900479997,"Uplift_Optimistic":56619836.28,"Cost9_Optimistic":4362558.3853739994,"Cost12_Optimistic":5797871.235072},{"Brand":"SONY","Tier":"high","DoanhSo_All":16834176001.0,"DoanhSo_TraGop":1763861858.0,"PenetrationRevenue":0.1047786276,"ChiPhi_Pct_All":0.0028001268,"ChiPhi_pct_of_installment":0.0267242176,"Share_4_6":0.2329842932,"Share_7_9":0.0104712042,"Share_10_12":0.0279232112,"Share_0_3":0.0235602094,"Share_Gateway":0.705061082,"UpliftRate_Cons":0.08,"UpliftRate_Base":0.12,"UpliftRate_Opt":0.18,"Uplift_Conservative":141108948.64,"Cost9_Conservative":10872444.4927120004,"Cost12_Conservative":14449556.3407360017,"Uplift_Base":211663422.96,"Cost9_Base":16308666.7390679978,"Cost12_Base":21674334.5111039989,"Uplift_Optimistic":317495134.44,"Cost9_Optimistic":24463000.1086019985,"Cost12_Optimistic":32511501.7666560002},{"Brand":"SHOKZ","Tier":"low","DoanhSo_All":2142248000.0,"DoanhSo_TraGop":185111000.0,"PenetrationRevenue":0.0864096967,"ChiPhi_Pct_All":0.0021054069,"ChiPhi_pct_of_installment":0.0243654008,"Share_4_6":0.3333333333,"Share_7_9":0.0,"Share_10_12":0.0222222222,"Share_0_3":0.0444444444,"Share_Gateway":0.6,"UpliftRate_Cons":0.03,"UpliftRate_Base":0.06,"UpliftRate_Opt":0.10,"Uplift_Conservative":5553330.0,"Cost9_Conservative":427884.0765,"Cost12_Conservative":568660.992,"Uplift_Base":11106660.0,"Cost9_Base":855768.1529999999,"Cost12_Base":1137321.9839999999,"Uplift_Optimistic":18511100.0,"Cost9_Optimistic":1426280.2549999999,"Cost12_Optimistic":1895536.6400000001},{"Brand":"JBL","Tier":"low","DoanhSo_All":7362913000.0,"DoanhSo_TraGop":455452683.0,"PenetrationRevenue":0.0618576755,"ChiPhi_Pct_All":0.001230081,"ChiPhi_pct_of_installment":0.0198856651,"Share_4_6":0.1547169811,"Share_7_9":0.0188679245,"Share_10_12":0.0188679245,"Share_0_3":0.0075471698,"Share_Gateway":0.8,"UpliftRate_Cons":0.03,"UpliftRate_Base":0.06,"UpliftRate_Opt":0.10,"Uplift_Conservative":13663580.49,"Cost9_Conservative":1052778.8767545,"Cost12_Conservative":1399150.6421760002,"Uplift_Base":27327160.98,"Cost9_Base":2105557.7535089999,"Cost12_Base":2798301.2843520003,"Uplift_Optimistic":45545268.3,"Cost9_Optimistic":3509262.9225150002,"Cost12_Optimistic":4663835.4739200007},{"Brand":"HUAWEI","Tier":"low","DoanhSo_All":3698035000.0,"DoanhSo_TraGop":208558971.0,"PenetrationRevenue":0.056397241,"ChiPhi_Pct_All":0.0009456361,"ChiPhi_pct_of_installment":0.0167674176,"Share_4_6":0.1568627451,"Share_7_9":0.0196078431,"Share_10_12":0.0294117647,"Share_0_3":0.0098039216,"Share_Gateway":0.7843137255,"UpliftRate_Cons":0.03,"UpliftRate_Base":0.06,"UpliftRate_Opt":0.10,"Uplift_Conservative":6256769.13,"Cost9_Conservative":482084.0614664999,"Cost12_Conservative":640693.158912,"Uplift_Base":12513538.26,"Cost9_Base":964168.1229329999,"Cost12_Base":1281386.317824,"Uplift_Optimistic":20855897.1,"Cost9_Optimistic":1606946.8715550001,"Cost12_Optimistic":2135643.8630400002},{"Brand":"ANKER","Tier":"low","DoanhSo_All":8903343000.0,"DoanhSo_TraGop":244528591.0,"PenetrationRevenue":0.0274648063,"ChiPhi_Pct_All":0.0001507771,"ChiPhi_pct_of_installment":0.0054898297,"Share_4_6":0.1286863271,"Share_7_9":0.0428954424,"Share_10_12":0.0375335121,"Share_0_3":0.018766756,"Share_Gateway":0.7721179625,"UpliftRate_Cons":0.03,"UpliftRate_Base":0.06,"UpliftRate_Opt":0.10,"Uplift_Conservative":7335857.73,"Cost9_Conservative":565227.8380964999,"Cost12_Conservative":751191.831552,"Uplift_Base":14671715.46,"Cost9_Base":1130455.6761929998,"Cost12_Base":1502383.663104,"Uplift_Optimistic":24452859.1,"Cost9_Optimistic":1884092.7936549999,"Cost12_Optimistic":2503972.7718400001}];
+const fmtVND = n => n.toLocaleString('vi-VN', {maximumFractionDigits:0}) + ' đ';
+const fmtPct = n => (n*100).toFixed(2) + '%';
+
+const colors = ['#0f2a4a','#e8742c','#2c8de8','#1e9e6b','#d64545','#8e44ad','#16365c','#c98a1f','#3aa6a0'];
+
+// Table 1
+const tblMain = document.getElementById('tblMain');
+brandData.forEach((b,i)=>{
+  const tr = document.createElement('tr');
+  const longTerm = (b.Share_7_9||0)+(b.Share_10_12||0);
+  tr.innerHTML = `<td>${b.Brand}</td><td>${fmtVND(b.DoanhSo_All)}</td><td>${fmtVND(b.DoanhSo_TraGop)}</td><td>${fmtPct(b.PenetrationRevenue)}</td><td>${fmtPct(b.ChiPhi_Pct_All)}</td><td>${fmtPct(b.ChiPhi_pct_of_installment)}</td><td>${fmtPct(longTerm)}</td>`;
+  tblMain.appendChild(tr);
+});
+
+// Table 2 - brand uplift base scenario
+const tblU = document.getElementById('tblBrandUplift');
+const maxGMV = Math.max(...brandData.map(b=>b.DoanhSo_TraGop));
+brandData.slice().sort((a,b)=>b.DoanhSo_TraGop-a.DoanhSo_TraGop).forEach(b=>{
+  const tr = document.createElement('tr');
+  let tag, tagClass;
+  if(b.DoanhSo_TraGop > maxGMV*0.3){tag='Cao';tagClass='high';}
+  else if(b.DoanhSo_TraGop > maxGMV*0.1){tag='Trung bình';tagClass='mid';}
+  else {tag='Theo dõi';tagClass='low';}
+  const tierLabel = b.Tier==='high' ? 'Đơn giá cao' : 'Đơn giá thấp';
+  tr.innerHTML = `<td>${b.Brand}</td><td>${tierLabel}</td><td>${fmtPct(b.UpliftRate_Base)}</td><td>${fmtVND(b.DoanhSo_TraGop)}</td><td class="pos">+${fmtVND(b.Uplift_Base)}</td><td>${fmtVND(b.Cost9_Base)}</td><td>${fmtVND(b.Cost12_Base)}</td><td><span class="tag ${tagClass}">${tag}</span></td>`;
+  tblU.appendChild(tr);
+});
+
+// Chart 1: Penetration
+new Chart(document.getElementById('chartPenetration'), {
+  type:'bar',
+  data:{labels:brandData.map(b=>b.Brand).sort((a,b)=>0).map((_,i)=>brandData.slice().sort((a,b)=>b.PenetrationRevenue-a.PenetrationRevenue)[i].Brand),
+    datasets:[{label:'% Doanh thu trả góp', data:brandData.slice().sort((a,b)=>b.PenetrationRevenue-a.PenetrationRevenue).map(b=>+(b.PenetrationRevenue*100).toFixed(2)), backgroundColor:'#2c8de8', borderRadius:5}]},
+  options:{plugins:{title:{display:true,text:'Tỷ lệ thâm nhập trả góp theo brand (% Doanh thu)'},legend:{display:false}}, scales:{y:{ticks:{callback:v=>v+'%'}}}}
+});
+
+// Chart 2: GMV
+new Chart(document.getElementById('chartGMV'), {
+  type:'bar',
+  data:{labels:brandData.slice().sort((a,b)=>b.DoanhSo_TraGop-a.DoanhSo_TraGop).map(b=>b.Brand),
+    datasets:[{label:'Doanh số trả góp (triệu đ)', data:brandData.slice().sort((a,b)=>b.DoanhSo_TraGop-a.DoanhSo_TraGop).map(b=>+(b.DoanhSo_TraGop/1e6).toFixed(0)), backgroundColor:'#e8742c', borderRadius:5}]},
+  options:{plugins:{title:{display:true,text:'Quy mô doanh số trả góp theo brand (triệu đ)'},legend:{display:false}}}
+});
+
+// Chart 3: Term mix stacked
+const termLabels = brandData.map(b=>b.Brand);
+new Chart(document.getElementById('chartTermMix'), {
+  type:'bar',
+  data:{labels:termLabels,
+    datasets:[
+      {label:'0-3 tháng', data:brandData.map(b=>+(b.Share_0_3*100).toFixed(2)), backgroundColor:'#a9c6e8'},
+      {label:'4-6 tháng', data:brandData.map(b=>+(b.Share_4_6*100).toFixed(2)), backgroundColor:'#2c8de8'},
+      {label:'7-9 tháng', data:brandData.map(b=>+(b.Share_7_9*100).toFixed(2)), backgroundColor:'#e8742c'},
+      {label:'10-12 tháng', data:brandData.map(b=>+(b.Share_10_12*100).toFixed(2)), backgroundColor:'#d64545'},
+      {label:'Khác / Cổng thẻ TD', data:brandData.map(b=>+(b.Share_Gateway*100).toFixed(2)), backgroundColor:'#dfe4ea'},
+    ]},
+  options:{plugins:{title:{display:true,text:'Cơ cấu kỳ hạn trong tổng đơn trả góp theo brand (%)'}}, scales:{x:{stacked:true},y:{stacked:true,ticks:{callback:v=>v+'%'}}}}
+});
+
+// Chart 4: Cost curve
+new Chart(document.getElementById('chartCostCurve'), {
+  type:'line',
+  data:{labels:['3','6','9','12'],
+    datasets:[{label:'Chi phí trợ giá (% giá bán)', data:[2.56,5.14,7.71,10.24], borderColor:'#d64545', backgroundColor:'rgba(214,69,69,0.15)', fill:true, tension:0.25, pointRadius:5}]},
+  options:{plugins:{title:{display:true,text:'Chi phí trợ giá 0% theo kỳ hạn (CTTC, trả trước 20%)'},legend:{display:false}}, scales:{x:{title:{display:true,text:'Kỳ hạn (tháng)'}},y:{ticks:{callback:v=>v+'%'}}}}
+});
+
+// Chart 5: Scenario comparison
+new Chart(document.getElementById('chartScenario'), {
+  type:'bar',
+  data:{labels:['Conservative','Base','Optimistic'],
+    datasets:[
+      {label:'Uplift Doanh số trả góp (triệu đ)', data:[305.9,475.3,723.9], backgroundColor:'#1e9e6b', borderRadius:5},
+      {label:'Chi phí CTTC @9 tháng (triệu đ)', data:[23.6,36.6,55.8], backgroundColor:'#e8742c', borderRadius:5},
+      {label:'Chi phí CTTC @12 tháng (triệu đ)', data:[31.3,48.7,74.1], backgroundColor:'#d64545', borderRadius:5},
+    ]},
+  options:{plugins:{title:{display:true,text:'So sánh Uplift kỳ vọng và Chi phí phát sinh theo kịch bản (tổng 9 brand, theo phân khúc giá)'}}}
+});
+</script>
+</body>
+</html>
